@@ -1,0 +1,20 @@
+# Virtual environment
+backend/venv/
+venv/
+
+# Environment variables
+backend/.env
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code settings (optional)
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
