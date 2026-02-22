@@ -1,24 +1,20 @@
-from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
+from pydantic import BaseModel, EmailStr
+
 
 class EmailCreate(BaseModel):
-    message_id: str
-    sender: str
+    sender: EmailStr
     subject: str
     body: str
-    category: Optional[str] = None
-    priority: Optional[str] = None
+
 
 class EmailResponse(BaseModel):
-    id: int
     message_id: str
-    sender: str
+    sender: EmailStr
     subject: str
     body: str
-    category: Optional[str]
-    priority: Optional[str]
-    created_at: datetime
+    category: str
+    priority: str
+    status: str
 
     class Config:
         from_attributes = True

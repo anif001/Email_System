@@ -15,7 +15,7 @@ app = FastAPI(
     version="1.0.0"
 )
 # Include API routes
-app.include_router(email.router)
+app.include_router(email.router, prefix="/api/v1", tags=["Emails"])
 
 
 # Simple health check

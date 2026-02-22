@@ -12,7 +12,8 @@ def process_pending_alerts(db: Session):
 
     high_priority_emails = db.query(models.Email).filter(
         models.Email.priority == "high",
-        models.Email.is_alert_sent == False
+        models.Email.status == "PROCESSED",
+        # models.Email.is_alert_sent == False
     ).all()
 
     for email in high_priority_emails:
@@ -21,15 +22,20 @@ def process_pending_alerts(db: Session):
 
             if success:
                 email.is_alert_sent = True
-                email.status = "alert_sent"
+                email.status = "ALERT_SENT"
                 email.processed_at = datetime.utcnow()
+                db.add(email)
+                db.commit()
+                db.refresh(email)
 
-            db.commit()
 
         except Exception as e:
             email.alert_attempts += 1
-            email.status = "failed"
-            email.error_message = str(e)
-            db.commit()
+        
 
+            if email.alert_attempts >= 3:
+                email.status = "FAILED"
+                email.error_message = str(e)    
+            else:
+                email.status = "RETRYING"
     return high_priority_emails
