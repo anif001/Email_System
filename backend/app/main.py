@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app.database import engine
 from app import models
 from app.routes import email
-
+from app.scheduler import scheduler
 
 # Create DB tables
 models.Base.metadata.create_all(bind=engine)
