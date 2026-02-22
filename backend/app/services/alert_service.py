@@ -21,7 +21,6 @@ def process_pending_alerts(db: Session):
             success = send_alert(email)
 
             if success:
-                email.is_alert_sent = True
                 email.status = "ALERT_SENT"
                 email.processed_at = datetime.utcnow()
                 db.add(email)
