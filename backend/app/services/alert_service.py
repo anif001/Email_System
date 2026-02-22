@@ -1,11 +1,20 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
 from app import models
+from app.integrations.telegram_service import send_telegram_message
 
 
 def send_alert(email: models.Email):
-    print(f"ALERT SENT FOR: {email.subject}")
-    return True
+    message = f"""ALERT: High priority email received 
+    From: {email.sender}
+    Subject: {email.subject}
+    Body: {email.body}
+    Received At: {email.received_at}
+    category: {email.category}
+    """
+    success = send_telegram_message(message)
+    return success
+
 
 
 def process_pending_alerts(db: Session):

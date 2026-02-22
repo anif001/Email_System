@@ -4,7 +4,7 @@ from app.database import get_db
 from app import schemas
 from app.services import email_service
 from app.services.alert_service import process_pending_alerts
-
+from app.integrations.gmail_fetcher import fetch_unread_emails
 router = APIRouter( tags=["Emails"])
 
 @router.post("/emails", response_model=schemas.EmailResponse)
@@ -18,3 +18,9 @@ def get_emails(db: Session = Depends(get_db)):
 def trigger_alerts(db: Session = Depends(get_db)):
     emails = process_pending_alerts(db)
     return {"processed": len(emails)}
+from app.integrations.gmail_fetcher import fetch_unread_emails
+
+@router.get("/fetch-gmail")
+def fetch_gmail():
+    emails = fetch_unread_emails()
+    return emails
